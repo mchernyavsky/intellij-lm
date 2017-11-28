@@ -1,0 +1,24 @@
+<idea-plugin>
+    <id>org.lm.lang</id>
+    <name>LM</name>
+    <version>0.0.1</version>
+    <vendor url="https://github.com/mchernyavsky/intellij-lm"/>
+
+    <description><![CDATA[
+      LM language support
+    ]]></description>
+
+    <change-notes><![CDATA[
+      Release 0.0.1: Initial release.<br>
+    ]]></change-notes>
+
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
+    <idea-version since-build="162"/>
+
+    <extensions defaultExtensionNs="com.intellij">
+    </extensions>
+
+    <actions>
+    </actions>
+
+</idea-plugin>
