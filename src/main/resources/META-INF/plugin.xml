@@ -12,10 +12,31 @@
       Release 0.0.1: Initial release.<br>
     ]]></change-notes>
 
-    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
     <idea-version since-build="162"/>
 
     <extensions defaultExtensionNs="com.intellij">
+
+        <!-- LM -->
+
+        <!-- File-type Factory -->
+
+        <fileTypeFactory implementation="org.lm.LmFileTypeFactory"/>
+
+        <!-- Parser -->
+
+        <lang.parserDefinition language="LM"
+                               implementationClass="org.lm.parser.LmParserDefinition"/>
+
+        <!-- Syntax Highlighter -->
+
+        <lang.syntaxHighlighterFactory language="LM"
+                                       implementationClass="org.lm.highlight.LmSyntaxHighlighterFactory"/>
+
+        <!-- Annotation -->
+
+        <annotator language="LM"
+                   implementationClass="org.lm.annotation.LmHighlightingAnnotator"/>
+
     </extensions>
 
     <actions>
