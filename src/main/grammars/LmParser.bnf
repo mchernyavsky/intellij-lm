@@ -1,0 +1,81 @@
+{
+    parserClass = "org.lm.lang.parser.LmParser"
+
+    implements = 'org.lm.psi.ext.LmCompositeElement'
+    extends = 'org.lm.psi.ext.LmCompositeElementImpl'
+
+    elementTypeHolderClass = "org.lm.psi.LmElementTypes"
+
+    elementTypeClass = "org.lm.psi.LmCompositeElementType"
+    tokenTypeClass = "org.lm.psi.LmTokenType"
+
+    psiClassPrefix = "Lm"
+    psiImplClassSuffix = "Impl"
+    psiPackage = "org.lm.psi"
+    psiImplPackage = "org.lm.psi.impl"
+
+    generateTokenAccessors = true
+
+    tokens = [
+        LPAREN     = '('
+        RPAREN     = ')'
+        LBRACE     = '{'
+        RBRACE     = '}'
+
+        ASSIGN     = '='
+        DOT        = '.'
+
+        ADD        = '+'
+        SUB        = '-'
+        MUL        = '*'
+        DIV        = '/'
+
+        MODULE_KW  = 'module'
+        IMPORT_KW  = 'import'
+        INCLUDE_KW = 'include'
+
+        DEF_KW     = 'def'
+
+        FUN_KW     = 'fun'
+        FIX_KW     = 'fix'
+
+        LET_KW     = 'let'
+        LETREC_KW  = 'letrec'
+        LETPAR_KW  = 'letpar'
+        IN_KW      = 'in'
+
+        IFZ_KW     = 'ifz'
+        THEN_KW    = 'then'
+        ELSE_KW    = 'else'
+
+        LINE_COMMENT = "regexp:#[^\r\n]*"
+    ]
+}
+
+program ::= decl*
+
+decl ::= MODULE_KW did LBRACE decl* RBRACE
+    | IMPORT_KW qid
+    | INCLUDE_KW qid
+    | DEF_KW did ASSIGN exp
+
+exp ::= qid
+    | fun
+    | let
+    | IFZ_KW exp THEN_KW exp (ELSE_KW exp)?
+    | LPAREN exp exp RPAREN
+    | LPAREN exp (ADD | SUB | MUL | DIV) exp RPAREN
+    | INT
+
+fun ::= FUN_KW did LBRACE exp RBRACE
+    |   FIX_KW did LBRACE exp RBRACE
+
+let ::= LET_KW  bind* IN_KW exp
+    | LETREC_KW bind* IN_KW exp
+    | LETPAR_KW bind* IN_KW exp
+
+bind ::= did ASSIGN exp
+
+qid ::= ID (DOT ID)*
+
+did ::= ID
