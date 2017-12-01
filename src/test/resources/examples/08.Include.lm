@@ -1,0 +1,9 @@
+module A {
+    def x = 3
+}
+
+module B {
+    include A
+    def x = 6
+    def z = x
+}
