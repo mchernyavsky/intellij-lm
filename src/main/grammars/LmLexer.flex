@@ -22,11 +22,6 @@ import static org.lm.psi.LmElementTypes.*;
 %type IElementType
 %unicode
 
-%{
-    private int commentStart;
-    private int commentDepth;
-%}
-
 EOL                 = \R
 WHITE_SPACE         = \s+
 
