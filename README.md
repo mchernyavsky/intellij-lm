@@ -8,3 +8,4 @@ IntelliJ IDEA plugin for toy language LM
 - [ ] Rename Refactoring
 - [ ] Safe Delete Refactoring
 - [ ] Go to Class and Go to Symbol
+- [ ] Indexing and PSI Stubs
