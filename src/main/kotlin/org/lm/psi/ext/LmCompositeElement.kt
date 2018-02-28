@@ -21,7 +21,7 @@ interface LmCompositeElement : PsiElement {
 }
 
 abstract class LmCompositeElementImpl(node: ASTNode) : ASTWrapperPsiElement(node),
-    LmCompositeElement {
+                                                       LmCompositeElement {
     override val namespace: Namespace = EmptyNamespace
 
     override val scope: Scope
@@ -36,7 +36,7 @@ abstract class LmCompositeElementImpl(node: ASTNode) : ASTWrapperPsiElement(node
 }
 
 abstract class LmStubbedElementImpl<StubT : StubElement<*>> : StubBasedPsiElementBase<StubT>,
-    LmCompositeElement {
+                                                              LmCompositeElement {
     override val namespace: Namespace = EmptyNamespace
 
     override val scope: Scope

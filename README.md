@@ -2,10 +2,10 @@
 IntelliJ IDEA plugin for toy language LM
 
 # Features
-- [ ] References and Resolve
-- [ ] Code Completion
-- [ ] Find Usages
-- [ ] Rename Refactoring
-- [ ] Safe Delete Refactoring
-- [ ] Go to Class and Go to Symbol
-- [ ] Indexing and PSI Stubs
+- [x] References and Resolve
+- [x] Code Completion
+- [x] Find Usages
+- [x] Rename Refactoring
+- [x] Safe Delete Refactoring
+- [x] Go to Class and Go to Symbol
+- [x] Indexing and PSI Stubs

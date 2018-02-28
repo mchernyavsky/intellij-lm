@@ -1,8 +1,7 @@
 package org.lm.psi.ext
 
 import com.intellij.lang.ASTNode
-import org.lm.psi.LmDefinitionId
-import org.lm.psi.LmQualifiedId
+import org.lm.psi.*
 import org.lm.resolve.EmptyScope
 import org.lm.resolve.LmReference
 import org.lm.resolve.LmReferenceBase
@@ -10,8 +9,8 @@ import org.lm.resolve.Scope
 import org.lm.resolve.namespace.EmptyNamespace
 import org.lm.resolve.namespace.Namespace
 
-abstract class LmDefinitionIdImplMixin(node: ASTNode): LmCompositeElementImpl(node),
-    LmDefinitionId {
+abstract class LmDefinitionIdImplMixin(node: ASTNode) : LmCompositeElementImpl(node),
+        LmDefinitionId {
 
     override val referenceNameElement: LmDefinitionIdImplMixin
         get() = this
@@ -22,8 +21,8 @@ abstract class LmDefinitionIdImplMixin(node: ASTNode): LmCompositeElementImpl(no
     override fun getName(): String = referenceName
 }
 
-abstract class LmQualifiedIdImplMixin(node: ASTNode) : LmCompositeElementImpl(node),
-    LmQualifiedId {
+abstract class LmQualifiedIdPartImplMixin(node: ASTNode) : LmCompositeElementImpl(node),
+        LmQualifiedIdPart {
     override val namespace: Namespace
         get() {
             val resolved = reference.resolve() as? LmCompositeElement
@@ -41,11 +40,14 @@ abstract class LmQualifiedIdImplMixin(node: ASTNode) : LmCompositeElementImpl(no
 
     override fun getName(): String = referenceName
 
-    override fun getReference(): LmReference = VcPrefixReference()
+    override fun getReference(): LmReference = LmIdReference()
 
-    private inner class VcPrefixReference : LmReferenceBase<LmQualifiedId>(this@LmQualifiedIdImplMixin) {
+    private inner class LmIdReference : LmReferenceBase<LmQualifiedIdPart>(this@LmQualifiedIdPartImplMixin) {
 
-        override fun resolve(): LmCompositeElement? = scope.resolve(name)
+        override fun resolve(): LmCompositeElement? {
+            val sibling = prevSiblingOfType<LmQualifiedIdPart>()
+            return sibling?.namespace?.resolve(name) ?: scope.resolve(name)
+        }
 
         override fun getVariants(): Array<Any> = scope.symbols.toTypedArray()
     }

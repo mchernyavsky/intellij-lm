@@ -6,7 +6,7 @@ import com.intellij.psi.stubs.StubElement
 import org.lm.psi.stubs.LmNamedStub
 
 abstract class LmDefinitionMixin<StubT> : LmStubbedNamedElementImpl<StubT>
-    where StubT : LmNamedStub, StubT : StubElement<*> {
+        where StubT : LmNamedStub, StubT : StubElement<*> {
 
     constructor(node: ASTNode) : super(node)
 

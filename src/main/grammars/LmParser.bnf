@@ -58,37 +58,46 @@ program ::= statement*
 
 statement ::= command | definition
 
-command ::= (IMPORT_KW | INCLUDE_KW) qualifiedId
+command ::= (IMPORT_KW | INCLUDE_KW) qualifiedId {
+    mixin = "org.lm.psi.ext.LmCommandImplMixin"
+}
 
 definition ::= module
     | variable
     | function {
     implements = "org.lm.psi.ext.LmNamedElement"
-    mixin = "org.lm.psi.ext.LmDefinitionMixin"
+    mixin = "org.lm.psi.ext.LmStubbedNamedElementImpl"
 }
 
-module ::= MODULE_KW definitionId LBRACE definition* RBRACE {
+module ::= MODULE_KW definitionId LBRACE statement* RBRACE {
+    mixin = "org.lm.psi.ext.LmModuleMixin"
     stubClass = "org.lm.psi.stubs.LmModuleStub"
     elementTypeFactory = "org.lm.psi.stubs.StubImplementationsKt.factory"
 }
 
-variable ::=  DEF_KW definitionId ASSIGN expression {
+variable ::= DEF_KW definitionId ASSIGN expression {
+    mixin = "org.lm.psi.ext.LmVariableMixin"
     stubClass = "org.lm.psi.stubs.LmVariableStub"
     elementTypeFactory = "org.lm.psi.stubs.StubImplementationsKt.factory"
 }
 
 function ::= FUN_KW definitionId LBRACE expression RBRACE
     | FIX_KW definitionId LBRACE expression RBRACE {
+    mixin = "org.lm.psi.ext.LmFunctionMixin"
     stubClass = "org.lm.psi.stubs.LmFunctionStub"
     elementTypeFactory = "org.lm.psi.stubs.StubImplementationsKt.factory"
 }
 
 expression ::= qualifiedId
-    | (LET_KW | LETREC_KW | LETPAR_KW) binding* IN_KW expression
+    | let
     | IFZ_KW expression THEN_KW expression (ELSE_KW expression)?
     | LPAREN expression expression RPAREN
     | LPAREN expression (ADD | SUB | MUL | DIV) expression RPAREN
     | INT
+
+let ::= (LET_KW | LETREC_KW | LETPAR_KW) binding* IN_KW expression {
+    mixin = "org.lm.psi.ext.LmLetImplMixin"
+}
 
 binding ::= definitionId ASSIGN expression
 
@@ -97,7 +106,9 @@ definitionId ::= ID {
     mixin = "org.lm.psi.ext.LmDefinitionIdImplMixin"
 }
 
-qualifiedId ::= ID (DOT ID)* {
+qualifiedId ::= qualifiedIdPart (DOT qualifiedIdPart)*
+
+qualifiedIdPart ::= ID {
     implements = "org.lm.psi.ext.LmReferenceElement"
-    mixin = "org.lm.psi.ext.LmQualifiedIdImplMixin"
+    mixin = "org.lm.psi.ext.LmQualifiedIdPartImplMixin"
 }

@@ -26,3 +26,6 @@ inline fun <reified T : PsiElement> PsiElement.parentOfType(
 inline fun <reified T : PsiElement> PsiElement.childOfType(
     strict: Boolean = true
 ): T? = PsiTreeUtil.findChildOfType(this, T::class.java, strict)
+
+inline fun <reified T : PsiElement> PsiElement.prevSiblingOfType(): T? =
+        PsiTreeUtil.getPrevSiblingOfType(this, T::class.java)
