@@ -50,32 +50,54 @@
 
         LINE_COMMENT = "regexp:#[^\r\n]*"
     ]
+
+    extends("module|variable|function|binding") = definition
 }
 
-program ::= decl*
+program ::= statement*
 
-decl ::= MODULE_KW did LBRACE decl* RBRACE
-    | IMPORT_KW qid
-    | INCLUDE_KW qid
-    | DEF_KW did ASSIGN exp
+statement ::= command | definition
 
-exp ::= qid
-    | fun
-    | let
-    | IFZ_KW exp THEN_KW exp (ELSE_KW exp)?
-    | LPAREN exp exp RPAREN
-    | LPAREN exp (ADD | SUB | MUL | DIV) exp RPAREN
+command ::= (IMPORT_KW | INCLUDE_KW) qualifiedId
+
+definition ::= module
+    | variable
+    | function {
+    implements = "org.lm.psi.ext.LmNamedElement"
+    mixin = "org.lm.psi.ext.LmDefinitionMixin"
+}
+
+module ::= MODULE_KW definitionId LBRACE definition* RBRACE {
+    stubClass = "org.lm.psi.stubs.LmModuleStub"
+    elementTypeFactory = "org.lm.psi.stubs.StubImplementationsKt.factory"
+}
+
+variable ::=  DEF_KW definitionId ASSIGN expression {
+    stubClass = "org.lm.psi.stubs.LmVariableStub"
+    elementTypeFactory = "org.lm.psi.stubs.StubImplementationsKt.factory"
+}
+
+function ::= FUN_KW definitionId LBRACE expression RBRACE
+    | FIX_KW definitionId LBRACE expression RBRACE {
+    stubClass = "org.lm.psi.stubs.LmFunctionStub"
+    elementTypeFactory = "org.lm.psi.stubs.StubImplementationsKt.factory"
+}
+
+expression ::= qualifiedId
+    | (LET_KW | LETREC_KW | LETPAR_KW) binding* IN_KW expression
+    | IFZ_KW expression THEN_KW expression (ELSE_KW expression)?
+    | LPAREN expression expression RPAREN
+    | LPAREN expression (ADD | SUB | MUL | DIV) expression RPAREN
     | INT
 
-fun ::= FUN_KW did LBRACE exp RBRACE
-    |   FIX_KW did LBRACE exp RBRACE
+binding ::= definitionId ASSIGN expression
 
-let ::= LET_KW  bind* IN_KW exp
-    | LETREC_KW bind* IN_KW exp
-    | LETPAR_KW bind* IN_KW exp
+definitionId ::= ID {
+    implements = "org.lm.psi.ext.LmReferenceElement"
+    mixin = "org.lm.psi.ext.LmDefinitionIdImplMixin"
+}
 
-bind ::= did ASSIGN exp
-
-qid ::= ID (DOT ID)*
-
-did ::= ID
+qualifiedId ::= ID (DOT ID)* {
+    implements = "org.lm.psi.ext.LmReferenceElement"
+    mixin = "org.lm.psi.ext.LmQualifiedIdImplMixin"
+}

@@ -2,7 +2,6 @@ package org.lm.highlight
 
 import com.intellij.openapi.editor.HighlighterColors
 import com.intellij.openapi.editor.colors.TextAttributesKey
-import com.intellij.openapi.options.colors.AttributesDescriptor
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors as Default
 
 enum class LmHighlightingColors(humanName: String, default: TextAttributesKey) {

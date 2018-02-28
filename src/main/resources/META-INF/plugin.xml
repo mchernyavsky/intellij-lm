@@ -32,10 +32,38 @@
         <lang.syntaxHighlighterFactory language="LM"
                                        implementationClass="org.lm.highlight.LmSyntaxHighlighterFactory"/>
 
+        <!-- Usages Provider -->
+
+        <lang.findUsagesProvider language="LM"
+                                 implementationClass="org.lm.search.LmFindUsagesProvider"/>
+        <fileStructureGroupRuleProvider
+                implementation="org.lm.search.LmModuleGroupingRuleProvider"/>
+        <fileStructureGroupRuleProvider
+                implementation="org.lm.search.LmVariableGroupingRuleProvider"/>
+        <fileStructureGroupRuleProvider
+                implementation="org.lm.search.LmFunctionGroupingRuleProvider"/>
+
+        <!-- Navigation -->
+
+        <gotoClassContributor implementation="org.lm.navigation.LmClassNavigationContributor"/>
+        <gotoSymbolContributor
+                implementation="org.lm.navigation.LmSymbolNavigationContributor"/>
+
         <!-- Annotation -->
 
         <annotator language="LM"
                    implementationClass="org.lm.annotation.LmHighlightingAnnotator"/>
+
+        <!-- Refactorings -->
+
+        <lang.refactoringSupport language="LM"
+                                 implementationClass="org.lm.refactoring.LmRefactoringSupportProvider"/>
+
+        <!-- Indices -->
+
+        <stubIndex implementation="org.lm.psi.stubs.index.LmNamedElementIndex"/>
+        <stubIndex implementation="org.lm.psi.stubs.index.LmDefinitionIndex"/>
+        <stubIndex implementation="org.lm.psi.stubs.index.LmGotoClassIndex"/>
 
     </extensions>
 
