@@ -32,6 +32,11 @@
         <lang.syntaxHighlighterFactory language="LM"
                                        implementationClass="org.lm.highlight.LmSyntaxHighlighterFactory"/>
 
+
+        <!-- Commenter -->
+
+        <lang.commenter language="LM" implementationClass="org.lm.commenter.LmCommenter"/>
+
         <!-- Usages Provider -->
 
         <lang.findUsagesProvider language="LM"
