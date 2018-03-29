@@ -7,11 +7,22 @@ import org.lm.LmFileType
 class LmPsiFactory(private val project: Project) {
 
     fun createDefinitionId(name: String): LmDefinitionId =
-        createModule(name)?.definitionId ?: error("Failed to create definition id: `$name`")
+            createVariable(name)?.definitionId
+                    ?: error("Failed to create definition id: `$name`")
 
-    fun createModule(name: String): LmModule? {
-        val code = "module $name {}"
-        return createFromText(code)?.childOfType() ?: error("Failed to create module: `$name`")
+    fun createQualifiedId(id: String): LmQualifiedId =
+            createVariable("_", id)
+                    ?.expression
+                    ?.qualifiedId
+                    ?: error("Failed to create qualified id: `$id`")
+
+    fun createQualifiedIdPart(id: String): LmQualifiedIdPart =
+            createQualifiedId(id).lastChild as? LmQualifiedIdPart
+                    ?: error("Failed to create definition id: `$id`")
+
+    fun createVariable(name: String, expression: String = "42"): LmVariable? {
+        val code = "def $name = $expression"
+        return createFromText(code)?.childOfType() ?: error("Failed to create variable: `$name`")
     }
 
     private fun createFromText(code: String): LmFile? =
