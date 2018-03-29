@@ -1,6 +1,6 @@
 package org.lm.psi.ext
 
-interface LmReferenceElement : LmCompositeElement {
-    val referenceNameElement: LmCompositeElement?
+interface LmReferenceElement : LmElement {
+    val referenceNameElement: LmElement?
     val referenceName: String?
 }

@@ -13,12 +13,11 @@ import org.lm.psi.LmPsiFactory
 import org.lm.psi.childOfType
 import org.lm.psi.stubs.LmNamedStub
 
-interface LmNamedElement : LmCompositeElement, PsiNameIdentifierOwner, NavigatablePsiElement
+interface LmNamedElement : LmElement, PsiNameIdentifierOwner, NavigatablePsiElement
 
-abstract class LmNamedElementImpl(node: ASTNode) : LmCompositeElementImpl(node),
-    LmNamedElement {
+abstract class LmNamedElementImpl(node: ASTNode) : LmElementImpl(node), LmNamedElement {
 
-    override fun getNameIdentifier(): LmCompositeElement? = childOfType()
+    override fun getNameIdentifier(): LmElementImpl? = childOfType()
 
     override fun getName(): String? = nameIdentifier?.text
 

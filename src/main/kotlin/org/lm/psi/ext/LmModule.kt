@@ -5,10 +5,11 @@ import com.intellij.psi.stubs.IStubElementType
 import org.lm.psi.LmModule
 import org.lm.psi.stubs.LmModuleStub
 import org.lm.resolve.NamespaceProvider
-import org.lm.resolve.namespace.Namespace
+import org.lm.resolve.Scope
 
 abstract class LmModuleMixin : LmDefinitionMixin<LmModuleStub>, LmModule {
-    override val namespace: Namespace = NamespaceProvider.forModule(this)
+    override val namespace: Scope
+        get() = NamespaceProvider.forModule(this)
 
     constructor(node: ASTNode) : super(node)
 
