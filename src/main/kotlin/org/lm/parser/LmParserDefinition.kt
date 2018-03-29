@@ -11,7 +11,6 @@ import com.intellij.psi.PsiFile
 import com.intellij.psi.tree.IFileElementType
 import com.intellij.psi.tree.TokenSet
 import org.lm.LmLanguage
-import org.lm.lang.parser.LmParser
 import org.lm.lexer.LmLexerAdapter
 import org.lm.psi.LM_COMMENTS
 import org.lm.psi.LM_WHITE_SPACES
