@@ -15,11 +15,6 @@ fun IndexSink.indexVariable(stub: LmVariableStub) {
     indexDefinitionStub(stub)
 }
 
-fun IndexSink.indexFunction(stub: LmFunctionStub) {
-    indexNamedStub(stub)
-    indexDefinitionStub(stub)
-}
-
 private fun IndexSink.indexNamedStub(stub: LmNamedStub) {
     stub.name?.let { occurrence(LmNamedElementIndex.KEY, it) }
 }

@@ -9,7 +9,6 @@ import com.intellij.usages.impl.FileStructureGroupRuleProvider
 import com.intellij.usages.rules.PsiElementUsage
 import com.intellij.usages.rules.SingleParentUsageGroupingRule
 import com.intellij.usages.rules.UsageGroupingRule
-import org.lm.psi.LmFunction
 import org.lm.psi.LmModule
 import org.lm.psi.LmVariable
 import org.lm.psi.ext.LmNamedElement
@@ -23,11 +22,6 @@ class LmModuleGroupingRuleProvider : FileStructureGroupRuleProvider {
 class LmVariableGroupingRuleProvider : FileStructureGroupRuleProvider {
     override fun getUsageGroupingRule(project: Project): UsageGroupingRule? =
         createGroupingRule<LmVariable>()
-}
-
-class LmFunctionGroupingRuleProvider : FileStructureGroupRuleProvider {
-    override fun getUsageGroupingRule(project: Project): UsageGroupingRule? =
-        createGroupingRule<LmFunction>()
 }
 
 private inline fun <reified T : LmNamedElement> createGroupingRule(): UsageGroupingRule {

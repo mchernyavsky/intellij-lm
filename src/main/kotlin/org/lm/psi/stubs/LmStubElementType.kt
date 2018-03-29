@@ -5,9 +5,9 @@ import com.intellij.psi.stubs.IStubElementType
 import com.intellij.psi.stubs.StubElement
 import com.intellij.psi.tree.IStubFileElementType
 import org.lm.LmLanguage
-import org.lm.psi.ext.LmCompositeElement
+import org.lm.psi.ext.LmElement
 
-abstract class LmStubElementType<StubT : StubElement<*>, PsiT : LmCompositeElement>(
+abstract class LmStubElementType<StubT : StubElement<*>, PsiT : LmElement>(
     debugName: String
 ) : IStubElementType<StubT, PsiT>(debugName, LmLanguage) {
 
