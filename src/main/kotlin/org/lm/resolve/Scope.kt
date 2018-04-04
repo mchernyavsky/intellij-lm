@@ -13,9 +13,9 @@ interface Scope {
 }
 
 class FilteredScope(
-    private val scope: Scope,
-    private val includeSet: Set<String>,
-    private val include: Boolean
+        private val scope: Scope,
+        private val includeSet: Set<String>,
+        private val include: Boolean
 ) : Scope {
     override val items: Map<String, LmElement>
         get() {
@@ -70,7 +70,7 @@ class OverridingScope(private val parent: Scope, private val child: Scope) : Sco
         get() = parent.symbols + child.symbols
 
     override fun resolve(name: String): LmElement? =
-        child.resolve(name) ?: parent.resolve(name)
+            child.resolve(name) ?: parent.resolve(name)
 }
 
 class LocalScope : Scope {

@@ -10,10 +10,10 @@ import org.lm.psi.LmElementTypes.ID
 class LmNamesValidator : NamesValidator {
 
     override fun isKeyword(name: String, project: Project?): Boolean =
-        getLexerType(name) in LM_KEYWORDS
+            getLexerType(name) in LM_KEYWORDS
 
     override fun isIdentifier(name: String, project: Project?): Boolean =
-        getLexerType(name) == ID && !containsComment(name)
+            getLexerType(name) == ID && !containsComment(name)
 
     private fun containsComment(name: String): Boolean = name.contains("#")
 

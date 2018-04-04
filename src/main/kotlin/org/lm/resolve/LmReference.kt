@@ -13,9 +13,7 @@ import org.lm.psi.ext.LmReferenceElement
 import org.lm.refactoring.LmNamesValidator
 
 interface LmReference : PsiReference {
-
     override fun getElement(): LmElement
-
     override fun resolve(): PsiElement?
 }
 

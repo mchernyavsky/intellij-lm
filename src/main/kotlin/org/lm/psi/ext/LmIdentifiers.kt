@@ -9,7 +9,6 @@ import org.lm.resolve.Scope
 import org.lm.resolve.ScopeProvider
 
 abstract class LmDefinitionIdImplMixin(node: ASTNode) : LmElementImpl(node), LmDefinitionId {
-
     override val referenceNameElement: LmDefinitionIdImplMixin
         get() = this
 
@@ -34,9 +33,7 @@ abstract class LmQualifiedIdPartImplMixin(node: ASTNode) : LmElementImpl(node), 
     override fun getReference(): LmReference = LmIdReference()
 
     private inner class LmIdReference : LmReferenceBase<LmQualifiedIdPart>(this@LmQualifiedIdPartImplMixin) {
-
         override fun resolve(): LmElement? = scope.resolve(name)
-
         override fun getVariants(): Array<Any> = scope.symbols.toTypedArray()
     }
 }

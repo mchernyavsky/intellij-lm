@@ -4,6 +4,7 @@ import com.intellij.psi.PsiElement
 import org.lm.psi.*
 import org.lm.psi.ext.LmQualifiedIdPartImplMixin
 import org.lm.psi.ext.elementType
+import org.lm.psi.ext.prevSiblingOfType
 
 object ScopeProvider {
 

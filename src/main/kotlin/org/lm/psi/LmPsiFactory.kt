@@ -3,6 +3,7 @@ package org.lm.psi
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiFileFactory
 import org.lm.LmFileType
+import org.lm.psi.ext.childOfType
 
 class LmPsiFactory(private val project: Project) {
 
@@ -26,6 +27,6 @@ class LmPsiFactory(private val project: Project) {
     }
 
     private fun createFromText(code: String): LmFile? =
-        PsiFileFactory.getInstance(project)
-            .createFileFromText("DUMMY.lm", LmFileType, code) as? LmFile
+            PsiFileFactory.getInstance(project)
+                    .createFileFromText("DUMMY.lm", LmFileType, code) as? LmFile
 }

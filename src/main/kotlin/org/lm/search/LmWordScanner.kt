@@ -7,8 +7,8 @@ import org.lm.psi.LM_COMMENTS
 import org.lm.psi.LmElementTypes.ID
 
 class LmWordScanner : DefaultWordsScanner(
-    LmLexerAdapter(),
-    TokenSet.create(ID),
-    LM_COMMENTS,
-    TokenSet.EMPTY
+        LmLexerAdapter(),
+        TokenSet.create(ID),
+        LM_COMMENTS,
+        TokenSet.EMPTY
 )

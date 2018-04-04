@@ -5,8 +5,8 @@ import com.intellij.navigation.ItemPresentation
 import com.intellij.psi.PsiElement
 import org.lm.psi.ext.LmElement
 import org.lm.psi.ext.LmNamedElement
-import org.lm.psi.fullName
-import org.lm.psi.module
+import org.lm.psi.ext.fullName
+import org.lm.psi.ext.module
 
 fun getPresentation(psi: LmElement): ItemPresentation {
     val location = run {
@@ -19,7 +19,7 @@ fun getPresentation(psi: LmElement): ItemPresentation {
 }
 
 fun getPresentationForStructure(psi: LmElement): ItemPresentation =
-    PresentationData(presentableName(psi), null, psi.getIcon(0), null)
+        PresentationData(presentableName(psi), null, psi.getIcon(0), null)
 
 private fun presentableName(psi: PsiElement): String? = when (psi) {
     is LmNamedElement -> psi.name

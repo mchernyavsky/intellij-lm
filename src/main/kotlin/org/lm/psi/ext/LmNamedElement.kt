@@ -10,7 +10,6 @@ import com.intellij.psi.stubs.StubElement
 import org.lm.navigation.getPresentation
 import org.lm.psi.LmDefinitionId
 import org.lm.psi.LmPsiFactory
-import org.lm.psi.childOfType
 import org.lm.psi.stubs.LmNamedStub
 
 interface LmNamedElement : LmElement, PsiNameIdentifierOwner, NavigatablePsiElement
@@ -34,7 +33,7 @@ abstract class LmNamedElementImpl(node: ASTNode) : LmElementImpl(node), LmNamedE
 }
 
 abstract class LmStubbedNamedElementImpl<StubT> : LmStubbedElementImpl<StubT>, LmNamedElement
-    where StubT : LmNamedStub, StubT : StubElement<*> {
+        where StubT : LmNamedStub, StubT : StubElement<*> {
 
     constructor(node: ASTNode) : super(node)
 

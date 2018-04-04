@@ -1,6 +1,9 @@
 package org.lm.resolve
 
-import org.lm.psi.*
+import org.lm.psi.LmDirectory
+import org.lm.psi.LmFile
+import org.lm.psi.LmModule
+import org.lm.psi.LmStatement
 import org.lm.psi.ext.LmElement
 import org.lm.psi.ext.LmQualifiedIdPartImplMixin
 

@@ -7,12 +7,12 @@ import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.stubs.StubIndex
 import com.intellij.psi.stubs.StubIndexKey
 import org.lm.psi.ext.LmNamedElement
-import org.lm.psi.fullName
-import org.lm.psi.module
+import org.lm.psi.ext.fullName
+import org.lm.psi.ext.module
 
 abstract class VcNavigationContributorBase<T> protected constructor(
-    private val indexKey: StubIndexKey<String, T>,
-    private val clazz: Class<T>
+        private val indexKey: StubIndexKey<String, T>,
+        private val clazz: Class<T>
 ) : GotoClassContributor where T : NavigationItem, T : LmNamedElement {
 
     override fun getNames(project: Project?, includeNonProjectItems: Boolean): Array<String> {
@@ -21,10 +21,10 @@ abstract class VcNavigationContributorBase<T> protected constructor(
     }
 
     override fun getItemsByName(
-        name: String?,
-        pattern: String?,
-        project: Project?,
-        includeNonProjectItems: Boolean
+            name: String?,
+            pattern: String?,
+            project: Project?,
+            includeNonProjectItems: Boolean
     ): Array<NavigationItem> {
         if (project == null || name == null) return emptyArray()
         val scope = if (includeNonProjectItems) {
