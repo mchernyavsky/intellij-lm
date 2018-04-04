@@ -3,11 +3,10 @@ package org.lm.psi.ext
 import com.intellij.lang.ASTNode
 import org.lm.psi.LmDefinitionId
 import org.lm.psi.LmQualifiedIdPart
-import org.lm.psi.prevSiblingOfType
-import org.lm.resolve.EmptyScope
 import org.lm.resolve.LmReference
 import org.lm.resolve.LmReferenceBase
 import org.lm.resolve.Scope
+import org.lm.resolve.ScopeProvider
 
 abstract class LmDefinitionIdImplMixin(node: ASTNode) : LmElementImpl(node), LmDefinitionId {
 
@@ -21,11 +20,8 @@ abstract class LmDefinitionIdImplMixin(node: ASTNode) : LmElementImpl(node), LmD
 }
 
 abstract class LmQualifiedIdPartImplMixin(node: ASTNode) : LmElementImpl(node), LmQualifiedIdPart {
-    override val namespace: Scope
-        get() {
-            val resolved = reference.resolve() as? LmElement
-            return resolved?.namespace ?: EmptyScope
-        }
+    val scope: Scope
+        get() = ScopeProvider.getScope(this)
 
     override val referenceNameElement: LmElement
         get() = this
@@ -39,14 +35,8 @@ abstract class LmQualifiedIdPartImplMixin(node: ASTNode) : LmElementImpl(node), 
 
     private inner class LmIdReference : LmReferenceBase<LmQualifiedIdPart>(this@LmQualifiedIdPartImplMixin) {
 
-        override fun resolve(): LmElement? {
-            val parent = prevSiblingOfType<LmQualifiedIdPart>() ?: return scope.resolve(name)
-            return parent.namespace.resolve(name)
-        }
+        override fun resolve(): LmElement? = scope.resolve(name)
 
-        override fun getVariants(): Array<Any> {
-            val parent = prevSiblingOfType<LmQualifiedIdPart>() ?: return scope.symbols.toTypedArray()
-            return parent.namespace.symbols.toTypedArray()
-        }
+        override fun getVariants(): Array<Any> = scope.symbols.toTypedArray()
     }
 }

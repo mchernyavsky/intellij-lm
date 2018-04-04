@@ -58,9 +58,7 @@ program ::= statement*
 
 statement ::= command | definition
 
-command ::= (IMPORT_KW | INCLUDE_KW) qualifiedId {
-    mixin = "org.lm.psi.ext.LmCommandImplMixin"
-}
+command ::= (IMPORT_KW | INCLUDE_KW) qualifiedId
 
 definition ::= module | variable {
     implements = "org.lm.psi.ext.LmNamedElement"
@@ -87,22 +85,18 @@ expression ::= qualifiedId
     | LPAREN expression (ADD | SUB | MUL | DIV) expression RPAREN
     | INT
 
-function ::= (FUN_KW | FIX_KW) parameter LBRACE expression RBRACE {
-    mixin = "org.lm.psi.ext.LmFunctionImplMixin"
-}
+function ::= (FUN_KW | FIX_KW) parameter LBRACE expression RBRACE
 
 parameter ::= definitionId {
     implements = "org.lm.psi.ext.LmNamedElement"
     mixin = "org.lm.psi.ext.LmNamedElementImpl"
 }
 
-let ::= (LET_KW | LETREC_KW | LETPAR_KW) binding* IN_KW expression {
-    mixin = "org.lm.psi.ext.LmLetImplMixin"
-}
+let ::= (LET_KW | LETREC_KW | LETPAR_KW) binding* IN_KW expression
 
 binding ::= definitionId ASSIGN expression {
     implements = "org.lm.psi.ext.LmNamedElement"
-    mixin = "org.lm.psi.ext.LmBindingMixinImpl"
+    mixin = "org.lm.psi.ext.LmNamedElementImpl"
 }
 
 definitionId ::= ID {

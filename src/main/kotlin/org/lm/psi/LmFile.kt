@@ -11,35 +11,6 @@ import org.lm.psi.stubs.LmFileStub
 import org.lm.resolve.*
 
 class LmFile(viewProvider: FileViewProvider) : PsiFileBase(viewProvider, LmLanguage), LmNamedElement {
-    override val namespace: Scope
-        get() = NamespaceProvider.forFile(this)
-
-    override val lexicalScope: Scope
-        get() {
-            val localScope = ScopeProvider.forElement(this)
-            val parentScope = containingDirectory?.let {
-                NamespaceProvider.forDirectory(LmDirectory(it))
-            } ?: return localScope
-            return when {
-                localScope.items.isEmpty() -> parentScope
-                parentScope.items.isEmpty() -> localScope
-                else -> OverridingScope(parentScope, localScope)
-            }
-        }
-
-    override val scope: Scope
-        get() {
-            val localScope = ScopeProvider.forElement(this, isLexical = false)
-            val parentScope = containingDirectory?.let {
-                NamespaceProvider.forDirectory(LmDirectory(it))
-            } ?: return localScope
-            return when {
-                localScope.items.isEmpty() -> parentScope
-                parentScope.items.isEmpty() -> localScope
-                else -> OverridingScope(parentScope, localScope)
-            }
-        }
-
     val nameWithoutSuffix: String = name.removeSuffix('.' + LmFileType.defaultExtension)
 
     override fun setName(name: String): PsiElement {
