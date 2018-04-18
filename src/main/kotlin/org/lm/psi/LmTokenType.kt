@@ -20,4 +20,8 @@ val LM_OPERATORS: TokenSet = TokenSet.create(ADD, SUB, MUL, DIV)
 
 val LM_WHITE_SPACES: TokenSet = TokenSet.create(TokenType.WHITE_SPACE)
 
+val LM_IDS: TokenSet = TokenSet.create(ID)
+
 val LM_COMMENTS: TokenSet = TokenSet.create(LINE_COMMENT)
+
+val LM_LITERALS: TokenSet = TokenSet.EMPTY

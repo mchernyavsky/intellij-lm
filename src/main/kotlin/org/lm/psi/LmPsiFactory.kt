@@ -3,7 +3,7 @@ package org.lm.psi
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiFileFactory
 import org.lm.LmFileType
-import org.lm.psi.ext.childOfType
+import org.nbkit.common.psi.ext.childOfType
 
 class LmPsiFactory(private val project: Project) {
 

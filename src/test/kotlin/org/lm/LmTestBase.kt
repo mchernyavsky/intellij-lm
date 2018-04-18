@@ -12,7 +12,7 @@ import com.intellij.testFramework.PlatformTestUtil
 import com.intellij.testFramework.fixtures.LightPlatformCodeInsightFixtureTestCase
 import junit.framework.AssertionFailedError
 import org.intellij.lang.annotations.Language
-import org.lm.psi.ext.ancestorOrSelf
+import org.nbkit.common.psi.ext.ancestorOrSelf
 
 abstract class LmTestBase : LightPlatformCodeInsightFixtureTestCase(), LmTestCase {
 

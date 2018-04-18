@@ -3,7 +3,7 @@ package org.lm.refactoring
 import org.intellij.lang.annotations.Language
 import org.lm.LmTestBase
 import org.lm.psi.LmQualifiedIdPart
-import org.lm.psi.ext.descendantsOfType
+import org.nbkit.common.psi.ext.descendantsOfType
 
 class RenameTest : LmTestBase() {
 
