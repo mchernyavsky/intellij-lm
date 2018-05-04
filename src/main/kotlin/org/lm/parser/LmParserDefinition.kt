@@ -12,18 +12,15 @@ import com.intellij.psi.tree.IFileElementType
 import com.intellij.psi.tree.TokenSet
 import org.lm.LmLanguage
 import org.lm.lexer.LmLexerAdapter
-import org.lm.psi.LM_COMMENTS
-import org.lm.psi.LM_WHITE_SPACES
-import org.lm.psi.LmElementTypes
-import org.lm.psi.LmFile
+import org.lm.psi.*
 
 class LmParserDefinition : ParserDefinition {
 
     override fun createLexer(project: Project): Lexer = LmLexerAdapter()
 
-    override fun getWhitespaceTokens(): TokenSet = LM_WHITE_SPACES
+    override fun getWhitespaceTokens(): TokenSet = LmTokenType.whitespaces
 
-    override fun getCommentTokens(): TokenSet = LM_COMMENTS
+    override fun getCommentTokens(): TokenSet = LmTokenType.comments
 
     override fun getStringLiteralElements(): TokenSet = TokenSet.EMPTY
 
