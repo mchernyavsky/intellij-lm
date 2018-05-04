@@ -22,7 +22,7 @@ apply plugin: 'idea'
 idea {
     module {
         generatedSourceDirs += file('src/gen')
-        generatedSourceDirs += file('src/gen2')
+        generatedSourceDirs += file('src/gen_nb')
     }
 }
 
@@ -50,7 +50,7 @@ tasks.withType(JavaCompile) { options.encoding = 'UTF-8' }
 sourceSets {
     main {
         java.srcDirs += 'src/gen'
-        java.srcDirs += 'src/gen2'
+        java.srcDirs += 'src/gen_nb'
     }
 }
 
