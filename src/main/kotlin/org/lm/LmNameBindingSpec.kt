@@ -1,54 +1,60 @@
 package org.lm
 
 import org.lm.psi.*
-import org.nbkit.NameBindingSpec
 import org.nbkit.ScopeRuleSpec
+import org.nbkit.gen.NameBindingSpec
+import java.nio.file.Paths
 
 fun main(args: Array<String>) {
-    NameBindingSpec("Lm", "org.lm")
+    val scopeRules = listOf(
             // imports
-            .addScopeRule(ScopeRuleSpec(LmCommand::class)
-                    .build())
+            ScopeRuleSpec(LmCommand::class)
+                    .build(),
 
             // named element
-            .addScopeRule(ScopeRuleSpec(LmParameter::class)
+            ScopeRuleSpec(LmParameter::class)
                     .setIsNamedElement()
-                    .build())
-            .addScopeRule(ScopeRuleSpec(LmBinding::class)
+                    .build(),
+            ScopeRuleSpec(LmBinding::class)
                     .setIsNamedElement()
-                    .build())
-                // definitions
-                .addScopeRule(ScopeRuleSpec(LmVariable::class)
-                        .setIsStubbed()
-                        .setIsNamedElement()
-                        .setIsDefinition()
-                        .build())
-                    // classes
-                    .addScopeRule(ScopeRuleSpec(LmModule::class)
-                            .setIsStubbed()
-                            .setIsNamedElement()
-                            .setIsDefinition()
-                            .setIsClass()
-                            .build())
+                    .build(),
+            // definitions
+            ScopeRuleSpec(LmVariable::class)
+                    .setIsStubbed()
+                    .setIsNamedElement()
+                    .setIsDefinition()
+                    .build(),
+            // classes
+            ScopeRuleSpec(LmModule::class)
+                    .setIsStubbed()
+                    .setIsNamedElement()
+                    .setIsDefinition()
+                    .setIsClass()
+                    .build(),
 
             // identifier
-            .addScopeRule(ScopeRuleSpec(LmDefinitionId::class)
+            ScopeRuleSpec(LmDefinitionId::class)
                     .setIsReferable()
-                    .build())
-            .addScopeRule(ScopeRuleSpec(LmQualifiedId::class)
-                    .build())
-            .addScopeRule(ScopeRuleSpec(LmQualifiedIdPart::class)
+                    .build(),
+            ScopeRuleSpec(LmQualifiedId::class)
+                    .build(),
+            ScopeRuleSpec(LmQualifiedIdPart::class)
                     .setIsReference()
-                    .build())
+                    .build(),
 
             // other
-            .addScopeRule(ScopeRuleSpec(LmStatement::class)
-                    .build())
-            .addScopeRule(ScopeRuleSpec(LmExpression::class)
-                    .build())
-            .addScopeRule(ScopeRuleSpec(LmFunction::class)
-                    .build())
-            .addScopeRule(ScopeRuleSpec(LmLet::class)
-                    .build())
-    .generate()
+            ScopeRuleSpec(LmStatement::class)
+                    .build(),
+            ScopeRuleSpec(LmExpression::class)
+                    .build(),
+            ScopeRuleSpec(LmLet::class)
+                    .build()
+    )
+
+    NameBindingSpec(
+            "Lm",
+            "org.lm",
+            Paths.get("src/gen_nb"),
+            scopeRules
+    ).generate()
 }
