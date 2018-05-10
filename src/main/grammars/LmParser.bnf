@@ -51,7 +51,9 @@
         LINE_COMMENT = "regexp:#[^\r\n]*"
     ]
 
+    extends("command|definition") = statement
     extends("module|variable") = definition
+    extends("let(Seq|Rec|Par)") = let
 }
 
 program ::= statement*
@@ -92,7 +94,13 @@ parameter ::= definitionId {
     mixin = "org.lm.psi.ext.LmNamedElementImpl"
 }
 
-let ::= (LET_KW | LETREC_KW | LETPAR_KW) binding* IN_KW expression
+let ::= letSeq | letRec | letPar
+
+letSeq ::= LET_KW binding* IN_KW expression
+
+letRec ::= LETREC_KW binding* IN_KW expression
+
+letPar ::= LETPAR_KW binding* IN_KW expression
 
 binding ::= definitionId ASSIGN expression {
     implements = "org.lm.psi.ext.LmNamedElement"
