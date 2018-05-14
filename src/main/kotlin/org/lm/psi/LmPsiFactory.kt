@@ -3,7 +3,7 @@ package org.lm.psi
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiFileFactory
 import org.lm.LmFileType
-import org.nbkit.common.psi.ext.childOfType
+import org.nbkit.common.psi.ext.descendantOfType
 
 class LmPsiFactory(private val project: Project) {
 
@@ -23,7 +23,7 @@ class LmPsiFactory(private val project: Project) {
 
     fun createVariable(name: String, expression: String = "42"): LmVariable? {
         val code = "def $name = $expression"
-        return createFromText(code)?.childOfType() ?: error("Failed to create variable: `$name`")
+        return createFromText(code)?.descendantOfType() ?: error("Failed to create variable: `$name`")
     }
 
     private fun createFromText(code: String): LmFile? =

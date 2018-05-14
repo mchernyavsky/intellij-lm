@@ -1,9 +1,21 @@
 package org.lm.resolve
 
-import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiElement
-import org.lm.psi.*
+import kotlin.Any
 import kotlin.Boolean
+import org.lm.psi.LmBinding
+import org.lm.psi.LmDefinition
+import org.lm.psi.LmDirectoryWrapper
+import org.lm.psi.LmExpression
+import org.lm.psi.LmFile
+import org.lm.psi.LmFileWrapper
+import org.lm.psi.LmFunction
+import org.lm.psi.LmLetPar
+import org.lm.psi.LmLetRec
+import org.lm.psi.LmLetSeq
+import org.lm.psi.LmModule
+import org.lm.psi.LmParameter
+import org.lm.psi.LmQualifiedIdPart
 import org.lm.psi.ext.LmQualifiedIdPartImplMixin
 import org.nbkit.common.psi.ext.childrenOfType
 import org.nbkit.common.psi.ext.prevSiblingOfType
@@ -13,22 +25,18 @@ import org.nbkit.common.resolve.OverridingScope
 import org.nbkit.common.resolve.Scope
 
 object ScopeProvider {
-    fun getScope(element: LmQualifiedIdPart): Scope {
-        return forIdentifier(element.prevSiblingOfType<LmQualifiedIdPartImplMixin>(), element)
-    }
+    fun getScope(element: LmQualifiedIdPart): Scope = forIdentifier(element.prevSiblingOfType<LmQualifiedIdPartImplMixin>(), element)
 
-    private fun forIdentifier(anchor: LmQualifiedIdPartImplMixin?, element: PsiElement): Scope {
-        return if (anchor != null) {
-            val resolved = anchor.scope.resolve(anchor.name)
-            when (resolved) {
-                is LmModule -> NamespaceProvider.forModule(resolved, true)
-                is LmFileWrapper -> NamespaceProvider.forFile(resolved, true)
-                is LmDirectoryWrapper -> NamespaceProvider.forDirectory(resolved)
-                else -> EmptyScope
-            }
-        } else {
-            forElement(element.parent, element)
+    private fun forIdentifier(prevSibling: LmQualifiedIdPartImplMixin?, element: PsiElement): Scope = if (prevSibling != null) {
+        val resolved = prevSibling.scope.resolve(prevSibling.name)
+        when (resolved) {
+            is LmModule -> NamespaceProvider.forModule(resolved, true)
+            is LmFileWrapper -> NamespaceProvider.forFile(resolved, true)
+            is LmDirectoryWrapper -> NamespaceProvider.forDirectory(resolved)
+            else -> EmptyScope
         }
+    } else {
+        forElement(element.parent, element)
     }
 
     private fun forElement(
@@ -37,18 +45,16 @@ object ScopeProvider {
             useCommand: Boolean = true
     ): Scope {
         element ?: return LocalScope()
-        val useCommand = useCommand && element !is LmCommand
+        val parentScope = forElement(element.parent, element)
         val scope = when (element) {
             is LmFunction -> forFunction(element, prev)
             is LmLetSeq -> forLetSeq(element, prev)
             is LmLetRec -> forLetRec(element, prev)
             is LmLetPar -> forLetPar(element, prev)
-            is LmModule -> forModule(element, useCommand)
-            is LmFile -> return forFile(LmFileWrapper(element), useCommand)
-//            is PsiDirectory -> NamespaceProvider.forDirectory(LmDirectoryWrapper(element))
+            is LmModule -> forModule(element, prev)
+            is LmFile -> forFile(element, prev)
             else -> EmptyScope
         }
-        val parentScope = forElement(element.parent, element, useCommand)
         return when {
             parentScope.items.isEmpty() -> scope
             scope.items.isEmpty() -> parentScope
@@ -58,64 +64,66 @@ object ScopeProvider {
 
     private fun forFunction(element: LmFunction, prev: PsiElement): Scope {
         val scope = LocalScope()
-        element
-                .childrenOfType<LmParameter>()
+        if (prev is Any) {
+            element
+                .childrenOfType<LmParameter>(null)
                 .forEach { scope.put(it) }
+        }
         return scope
     }
 
     private fun forLetSeq(element: LmLetSeq, prev: PsiElement): Scope {
         val scope = LocalScope()
-        when (prev) {
-            is LmExpression -> {
-                element
-                        .childrenOfType<LmBinding>()
-                        .forEach { scope.put(it) }
-            }
-            is LmBinding -> {
-                element
-                        .childrenOfType<LmBinding>()
-                        .takeWhile { it !== prev }
-                        .forEach { scope.put(it) }
-            }
-            else -> Unit
+        if (prev is LmExpression) {
+            element
+                .childrenOfType<LmBinding>(null)
+                .forEach { scope.put(it) }
+        }
+        if (prev is LmBinding) {
+            element
+                .childrenOfType<LmBinding>(prev)
+                .forEach { scope.put(it) }
         }
         return scope
     }
 
     private fun forLetRec(element: LmLetRec, prev: PsiElement): Scope {
         val scope = LocalScope()
-        element
-                .childrenOfType<LmBinding>()
+        if (prev is Any) {
+            element
+                .childrenOfType<LmBinding>(null)
                 .forEach { scope.put(it) }
+        }
         return scope
     }
 
     private fun forLetPar(element: LmLetPar, prev: PsiElement): Scope {
         val scope = LocalScope()
-        when (prev) {
-            is LmExpression -> {
-                element
-                        .childrenOfType<LmBinding>()
-                        .forEach { scope.put(it) }
-            }
-            else -> Unit
+        if (prev is LmExpression) {
+            element
+                .childrenOfType<LmBinding>(null)
+                .forEach { scope.put(it) }
         }
         return scope
     }
 
-    private fun forModule(module: LmModule, useCommand: Boolean = true): Scope
-            = NamespaceProvider.forModule(module, useCommand)
+    private fun forModule(element: LmModule, prev: PsiElement): Scope {
+        val scope = LocalScope()
+        if (prev is LmDefinition) {
+            element
+                .childrenOfType<LmDefinition>(prev)
+                .forEach { scope.put(it) }
+        }
+        return scope
+    }
 
-    private fun forFile(file: LmFileWrapper, useCommand: Boolean = true): Scope {
-        val dirNamespace = file.parent?.let {
-            NamespaceProvider.forDirectory(LmDirectoryWrapper(it))
+    private fun forFile(element: LmFile, prev: PsiElement): Scope {
+        val scope = LocalScope()
+        if (prev is LmDefinition) {
+            element
+                .childrenOfType<LmDefinition>(prev)
+                .forEach { scope.put(it) }
         }
-        val fileNamespace = NamespaceProvider.forFile(file, useCommand)
-        return when {
-            dirNamespace == null || dirNamespace.items.isEmpty() -> fileNamespace
-            fileNamespace.items.isEmpty() -> dirNamespace
-            else -> OverridingScope(dirNamespace, fileNamespace)
-        }
+        return scope
     }
 }

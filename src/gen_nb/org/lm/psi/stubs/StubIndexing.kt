@@ -17,12 +17,12 @@ private fun IndexSink.indexGotoClass(stubs: LmNamedStub) {
 }
 
 fun IndexSink.indexModule(stubs: LmModuleStub) {
-    indexNamedStub(stubs)
     indexDefinitionStub(stubs)
+    indexNamedStub(stubs)
     indexGotoClass(stubs)
 }
 
 fun IndexSink.indexVariable(stubs: LmVariableStub) {
-    indexNamedStub(stubs)
     indexDefinitionStub(stubs)
+    indexNamedStub(stubs)
 }
